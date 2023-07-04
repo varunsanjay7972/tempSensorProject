@@ -12,7 +12,7 @@ env/
 # Static files (CSS, JavaScript, images)
 staticfiles/
 *.staticstorage/
-
+# hello
 # Media files (user-uploaded content)
 media/
 
