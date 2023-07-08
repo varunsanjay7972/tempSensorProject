@@ -16,13 +16,24 @@ Including another URLconf
 """
 
 
-from django.conf import settings
+# from django.conf import settings
 
+# from django.contrib import admin
+# from django.urls import include, path
+
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#     path('', include('tempSensorApp.urls')),
+# ]
 from django.contrib import admin
 from django.urls import include, path
+from tempSensorApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('tempSensorApp.urls')),
+    path('', views.home, name='home'),
+    path('temperature-data/', views.temperature_data, name='temperature_data'),
+    path('pulse-data/', views.pulse_data, name='pulse_data'),
+    path('ecg-data/', views.ecg_data, name='ecg_data'),
 ]
 

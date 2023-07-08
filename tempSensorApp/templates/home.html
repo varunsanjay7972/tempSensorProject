@@ -1,14 +1,86 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
+{% comment %} <!DOCTYPE html>
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Before and after pseudo selector</title>
+    <title>SENSOR_DATA Readings</title>
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        section {
+            display: flex;
+        }
+    </style>
+</head>
 
+<body>
+    <h1>SENSOR_DATA</h1>
+    <section>
+        <div>
+            <table border="1" class="table">
+                <tr>
+                    <th>Temperature</th>
+                    <th>Time</th>
+                </tr>
+                {% for temperature_reading in temperature_readings %}
+                <tr>
+                    <td>{{ temperature_reading.temperature }}</td>
+                    <td>{{ temperature_reading.time }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>
+            <table border="1" class="table">
+                <tr>
+                    <th>Pulse_Data</th>
+                    <th>Time</th>
+                </tr>
+                {% for pulse_reading in pulse_readings %}
+                <tr>
+                    <td>{{ pulse_reading.pulse }}</td>
+                    <td>{{ pulse_reading.time }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>
+            <table border="1" class="table">
+                <tr>
+                    <th>ECG_DATA</th>
+                    <th>Time</th>
+                </tr>
+                {% for ecg_reading in ecg_readings %}
+                <tr>
+                    <td>{{ ecg_reading.ecg_data }}</td>
+                    <td>{{ ecg_reading.time }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
+
+
+</body>
+
+</html> {% endcomment %}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>SENSOR_DATA Readings</title>
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif&display=swap" rel="stylesheet">
     <style>
         body {
@@ -17,7 +89,7 @@
             background-color: black;
             color: white;
         }
-
+        
         header::before {
             background: url('https://cdn.pixabay.com/photo/2017/02/01/13/52/analysis-2030261_1280.jpg');
             content: "";
@@ -25,78 +97,100 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 200%;
+            height: 180%;
             z-index: -1;
             opacity: 0.5;
         }
-
-        .navigation {
-            font-family: 'Bree Serif', serif;
-            font-size: 20px;
-            display: flex;
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
         }
-
-        .table {
-            width: 70%;
-            text-align: center;
-        }
-
+        
         li {
-            list-style: none;
-            padding: 20px 500px;
-            font-size: x-large;
+            margin-bottom: 10px;
         }
-
-        section {
-            height: 174px;
-            font-family: 'Bree Serif', serif;
-            margin: 3px 47px;
+        
+        body {
             display: flex;
             flex-direction: column;
-            align-items: center;
         }
-
-        h1 {
-            font-size: 4rem;
+        
+        section {
+            display: flex;
+            justify-content: center;
+        }
+        
+        nav {
+            text-align: center;
+        }
+        
+        div {
+            border: 4px, rgb(207, 39, 39), solid;
+            border-radius: 3px;
+            margin: 3px;
         }
     </style>
 </head>
 
 <body>
-     <header>
-        <nav class="navbar">
-            <ul class="navigation">
-                <li class="item">SENSORS_DATA</li>
-            </ul>
+    <header>
+        <nav>
+            <h1>SENSOR_DATA</h1>
         </nav>
     </header>
-    <section>
-        <!-- Uncomment the table code if you want to display the temperature readings in a table -->
-         <table border="1" class="table">
-            <tr>
-                <th>Temperature</th>
-                <th>Pulse_data</th>
-                <th>ECG_data</th>
-                <th>Time</th>
-            </tr>
-            {% for reading in readings %}
-            <tr>
-                <td>{{ reading.temperature }}</td>
-                <td>{{ reading.Pulse_data }}</td>
-                <td>{{ reading.ECG_data }}</td>
-                <td>{{ reading.time }}</td>
-            </tr>
-            {% endfor %}
-        </table> 
 
-{% comment %}     
-        {% if chart %}
-        <img src="data:image/png;base64,{{ chart }}" alt="Temperature Chart">
-        {% endif %} {% endcomment %}
-    </section> 
-    
+
+    <section>
+        <div>
+            <table border="1" class="table">
+                <tr>
+                    <th>Temperature</th>
+                    <th>Time</th>
+                </tr>
+                {% for temperature_reading in temperature_readings %}
+                <tr>
+                    <td>{{ temperature_reading.temperature }}</td>
+                    <td>{{ temperature_reading.time }}</td>
+
+                </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+        <div>
+            <table border="1" class="table">
+                <tr>
+                    <th>Pulse_Data</th>
+                    <th>Time</th>
+                </tr>
+                {% for pulse_reading in pulse_readings %}
+                <tr>
+                    <td>{{ pulse_reading.pulse }}</td>
+                    <td>{{ pulse_reading.time }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+        <div>
+            <table border="1" class="table">
+                <tr>
+                    <th>ECG_DATA</th>
+                    <th>Time</th>
+                </tr>
+                {% for ecg_reading in ecg_readings %}
+                <tr>
+                    <td>{{ ecg_reading.ecg_data }}</td>
+                    <td>{{ ecg_reading.time }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+    </section>
 
 
 </body>
 
-</html> 
+</html>

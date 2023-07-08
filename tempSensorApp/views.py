@@ -1,43 +1,98 @@
-from django.http import JsonResponse
-from .models import TemperatureReading
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-# import matplotlib.pyplot as plt
-from .utils import get_plot
+# from django.http import JsonResponse
+# from .models import TemperatureReading
+# from django.views.decorators.csrf import csrf_exempt
+# from django.http import JsonResponse
+# from django.conf import settings
 
-from django.conf import settings
+# @csrf_exempt
+# def data(request):
+#     if request.method == 'POST':
+#         temp = request.POST.get('temperature')
+#         reading = TemperatureReading(temperature=float(temp))
+#         reading.save()
+
+#         # Delete excess records
+#         total_readings = TemperatureReading.objects.count()
+#         if total_readings > 40:
+#             excess_ids = TemperatureReading.objects.order_by('-time')[40:].values_list('id', flat=True)
+#             TemperatureReading.objects.filter(id__in=excess_ids).delete()
+
+#         return JsonResponse({'status': 'ok'}, status=201)
+#     else:
+#         print("Status not ok")
+#         return JsonResponse({'status': 'not ok'}, status=400)
+
+
+# from django.shortcuts import render
+
+# def home(request):
+    
+#     readings = TemperatureReading.objects.all().order_by('-time')
+#     return render(request, 'home.html', {'readings': readings})
+  
+
+from django.http import JsonResponse
+from .models import TemperatureReading, PulseReading, ECGReading
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
 
 @csrf_exempt
-def data(request):
+def temperature_data(request):
     if request.method == 'POST':
-        temp = request.POST.get('temperature')
-        reading = TemperatureReading(temperature=float(temp))
+        temperature = request.POST.get('temperature')
+        reading = TemperatureReading(temperature=float(temperature))
         reading.save()
 
-        # Keep only the most recent 80 readings
-        readings_to_keep = 40
-        all_readings = TemperatureReading.objects.all().order_by('-time')
-        print("Total readings before deletion:", all_readings.count())
-        if all_readings.count() > readings_to_keep:
-            old_readings = all_readings[readings_to_keep:]
-            old_readings.delete()
-        print("Total readings after deletion:", TemperatureReading.objects.count())
+        # Delete excess records
+        total_readings = TemperatureReading.objects.count()
+        if total_readings > 40:
+            excess_ids = TemperatureReading.objects.order_by('-time')[40:].values_list('id', flat=True)
+            TemperatureReading.objects.filter(id__in=excess_ids).delete()
 
         return JsonResponse({'status': 'ok'}, status=201)
     else:
-        print("Status not ok")
         return JsonResponse({'status': 'not ok'}, status=400)
 
 
+@csrf_exempt
+def pulse_data(request):
+    if request.method == 'POST':
+        pulse = request.POST.get('pulse')
+        reading = PulseReading(pulse=float(pulse))
+        reading.save()
 
-from django.shortcuts import render
+        # Delete excess records
+        total_readings = PulseReading.objects.count()
+        if total_readings > 40:
+            excess_ids = PulseReading.objects.order_by('-time')[40:].values_list('id', flat=True)
+            PulseReading.objects.filter(id__in=excess_ids).delete()
+
+        return JsonResponse({'status': 'ok'}, status=201)
+    else:
+        return JsonResponse({'status': 'not ok'}, status=400)
+
+
+@csrf_exempt
+def ecg_data(request):
+    if request.method == 'POST':
+        ecg = request.POST.get('ecg')
+        reading = ECGReading(ecg_data=ecg)
+        reading.save()
+
+        # Delete excess records
+        total_readings = ECGReading.objects.count()
+        if total_readings > 40:
+            excess_ids = ECGReading.objects.order_by('-time')[40:].values_list('id', flat=True)
+            ECGReading.objects.filter(id__in=excess_ids).delete()
+
+        return JsonResponse({'status': 'ok'}, status=201)
+    else:
+        return JsonResponse({'status': 'not ok'}, status=400)
+
 
 def home(request):
+    temperature_readings = TemperatureReading.objects.all().order_by('-time')
+    pulse_readings = PulseReading.objects.all().order_by('-time')
+    ecg_readings = ECGReading.objects.all().order_by('-time')
     
-    readings = TemperatureReading.objects.all().order_by('-time')
-    x=[x.time for x in readings]
-    y=[y.temperature for y in readings]
-    chart=get_plot(x,y)
-    return render(request, 'home.html', {'readings': readings})
-    # return render(request, 'home.html', {'chart':chart})
-
+    return render(request, 'home.html', {'temperature_readings': temperature_readings, 'pulse_readings': pulse_readings, 'ecg_readings': ecg_readings})
