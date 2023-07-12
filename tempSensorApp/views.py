@@ -34,7 +34,7 @@
 from django.http import JsonResponse
 from .models import TemperatureReading, PulseReading, ECGReading
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
+from django.shortcuts import render ,redirect
 
 @csrf_exempt
 def temperature_data(request):
@@ -94,5 +94,5 @@ def home(request):
     temperature_readings = TemperatureReading.objects.all().order_by('-time')
     pulse_readings = PulseReading.objects.all().order_by('-time')
     ecg_readings = ECGReading.objects.all().order_by('-time')
-    
+
     return render(request, 'home.html', {'temperature_readings': temperature_readings, 'pulse_readings': pulse_readings, 'ecg_readings': ecg_readings})
